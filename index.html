@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Phone Book</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css"
+            integrity="sha512-4xo8blKMVCiXpTaLzQSLSw3KFOVPWhm/TRtuPVc4WG6kUgjH6J03IBuG7JZPkcWMxJ5huwaBpOpnwYElP/m6wg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" href="./css/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <form action="submit" class="contact-form">
+                <h1 class="contact-form-title">Contact form</h1>
+                <div class="input-wrapper">
+                    <label for="name-input" class="label"> Name </label>
+                    <input
+                        id="name-input"
+                        type="text"
+                        class="input"
+                        name="name"
+                        placeholder="enter contact's name"
+                    />
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="phone-input" class="label"> Phone </label>
+                    <input
+                        id="phone-input"
+                        type="text"
+                        class="input"
+                        name="phone"
+                        placeholder="enter contact's phone"
+                    />
+                </div>
+
+                <button type="submit" class="submit-button">ADD CONTACT</button>
+            </form>
+            <div class="contacts-wrapper">
+                <h2 class="contact-title">Contacts</h2>
+                <ul class="contacts-list"></ul>
+            </div>
+        </div>
+
+        <script src="./main.js" type="module"></script>
+    </body>
+</html>
