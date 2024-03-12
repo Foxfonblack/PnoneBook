@@ -3,12 +3,28 @@ const nameInput = document.querySelector("#name-input");
 const phoneInput = document.querySelector("#phone-input");
 const contactList = document.querySelector(".contacts-list");
 let contactArr = [];
-
 let id = 1;
+
 contactForm.addEventListener("submit", addContact);
+
+const localContact = JSON.parse(localStorage.getItem("contacts"));
+console.log(localContact);
+
+contactArr = localContact ? localContact : [];
+
+document.addEventListener("DOMContentLoaded", renderContacts);
+
 function addContact(event) {
     event.preventDefault();
-    const elements = event.currentTarget.elements;
+    const elements = contactForm.elements;
+    if (elements.name.value === "") {
+        alert("поле 'name' не может быть пустым");
+        return;
+    }
+    if (elements.phone.value === "") {
+        alert("поле 'phone' не может быть пустым");
+        return;
+    }
     const contact = {
         id,
         name: elements.name.value,
@@ -16,44 +32,99 @@ function addContact(event) {
     };
     contactArr.push(contact);
     id += 1;
-    console.log(contactArr);
-    event.currentTarget.reset();
-    const result = contactArr
-        .map((item) => {
-            return `
-        <li class="contactItem" id=${item.id}>
-            <div class="contactsTextWrapper">
-                <p class="contact-name">name:    ${item.name}</p>
-                <p class="contact-phone">phone:    ${item.phone}</p>
-            </div>
-            <button class="deleteButton">DELETE</button>
-        </li>`;
-        })
-        .join("");
-    contactList.innerHTML = result;
-    const deleteButton = document.querySelector(".deleteButton");
-    deleteButton.addEventListener("click", OnDeleteButtonClick);
+    contactForm.reset();
+    renderContacts();
+    localStorage.setItem("contacts", JSON.stringify(contactArr));
 }
-function OnDeleteButtonClick(event) {
-    console.log(event.currentTarget.closest("li").id);
 
+function renderContacts() {
     const result = contactArr
-        .filter((item) => {
-            console.log(item.id);
-            return item.id !== Number(event.currentTarget.closest("li").id);
-        })
         .map((item) => {
             return `
-    <li class="contactItem" id=${item.id}>
-        <div class="contactsTextWrapper">
-            <p class="contact-name">name:    ${item.name}</p>
-            <p class="contact-phone">phone:    ${item.phone}</p>
-        </div>
-        <button class="deleteButton">DELETE</button>
-    </li>`;
+            <li class="contactItem" id=${item.id}>
+                <div class="first-wrapper"><div class="contactsTextWrapper">
+                    <p class="contact-name">name:    <span class="contact-name">${item.name}</span></p>
+                    <p class="contact-phone">phone:    <span class="contact-phone">${item.phone}</span></p>
+                </div>
+                
+                <div class="btn-wrapper">
+                <button class="delete-button">DELETE</button>
+                <buttton class="edit-button">EDIT</buttton>
+                 </div>
+                </div>
+            </li>`;
         })
         .join("");
-
-    contactArr = result;
     contactList.innerHTML = result;
+    // addDeleteEventListeners();
+}
+
+// let counter = 0;
+// function addDeleteEventListeners() {
+//     const deleteButton = document.querySelectorAll(".deleteButton");
+//     deleteButton.forEach((button) => {
+//         button.addEventListener("click", OnDeleteButtonClick);
+//         counter += 1;
+//         console.log(counter);
+//     });
+// }
+
+contactList.addEventListener("click", OnDeleteButtonClick);
+contactList.addEventListener("click", onEditBtnClick);
+contactList.addEventListener("click", OnSaveButtonClick);
+function OnDeleteButtonClick(event) {
+    // const contactId = Number(event.currentTarget.closest("li").id);
+    // contactArr = contactArr.filter((item) => item.id !== contactId);
+    // renderContacts();
+    if (event.target.classList.contains("delete-button")) {
+        console.log("click");
+        const contactId = Number(event.target.closest("li").id);
+        contactArr = contactArr.filter((item) => item.id !== contactId);
+        localStorage.setItem("contacts", JSON.stringify(contactArr));
+        renderContacts();
+    }
+}
+
+function onEditBtnClick(event) {
+    if (event.target.classList.contains("edit-button")) {
+        const textAreaName = document.createElement("textarea");
+        textAreaName.classList.add("textAreaName", "textAreaElement");
+        textAreaName.value =
+            event.target.closest(
+                "li"
+            ).firstElementChild.firstElementChild.firstElementChild.firstElementChild.textContent;
+        const textAreaPhone = document.createElement("textarea");
+        textAreaPhone.classList.add("textAreaPhone", "textAreaElement");
+        textAreaPhone.value =
+            event.target.closest(
+                "li"
+            ).firstElementChild.firstElementChild.lastElementChild.firstElementChild.textContent;
+        const saveButton = document.createElement("div");
+        saveButton.classList.add("saveButton", "textAreaElement");
+        saveButton.textContent = "SAVE";
+        event.target
+            .closest("li")
+            .append(textAreaName, textAreaPhone, saveButton);
+    }
+}
+
+function OnSaveButtonClick(event) {
+    if (event.target.classList.contains("saveButton")) {
+        event.target.closest(
+            "li"
+        ).firstElementChild.firstElementChild.firstElementChild.firstElementChild.textContent =
+            event.target.closest(
+                "li"
+            ).firstElementChild.nextElementSibling.value;
+        event.target.closest(
+            "li"
+        ).firstElementChild.firstElementChild.lastElementChild.firstElementChild.textContent =
+            event.target.closest(
+                "li"
+            ).lastElementChild.previousElementSibling.value;
+        event.target
+            .closest("li")
+            .querySelectorAll(".textAreaElement")
+            .forEach((item) => item.remove());
+    }
 }

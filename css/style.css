@@ -30,6 +30,10 @@ img {
     display: block;
 }
 
+/* body {
+    position: relative;
+} */
+
 .container {
     width: 1200px;
     margin: 0 auto;
@@ -37,12 +41,15 @@ img {
     justify-content: space-between;
     padding-top: 24px;
 }
+
 .contact-form {
+    /* position: fixed; */
     display: flex;
     flex-direction: column;
     gap: 24px;
     padding: 24px;
     width: 400px;
+    height: 314px;
     align-items: center;
     border-radius: 20px;
     box-shadow: 0px 0px 8px 2px #333;
@@ -81,13 +88,16 @@ img {
 }
 
 .contactItem {
-    padding: 20px;
-    width: 640px;
     border-radius: 12px;
     box-shadow: 0px 0px 8px 2px #333;
+    padding: 20px;
+}
+.first-wrapper {
+    width: 640px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 .contactsTextWrapper {
     display: flex;
@@ -101,7 +111,15 @@ img {
 .contact-phone {
     font-size: 20px;
 }
-.deleteButton {
+.btn-wrapper {
+    display: flex;
+    gap: 12px;
+}
+.delete-button,
+.edit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 140px;
     height: 36px;
     color: white;
@@ -115,4 +133,43 @@ img {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+.textAreaName {
+    resize: none;
+    width: 314px;
+    height: 64px;
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 8px;
+}
+.textAreaName:focus-within {
+    outline: none;
+    border: 1px solid rgb(104, 166, 104);
+}
+.textAreaPhone {
+    resize: none;
+    margin-left: 12px;
+    width: 314px;
+    height: 64px;
+    padding: 8px;
+    font-size: 20px;
+    border-radius: 8px;
+}
+.textAreaPhone:focus-within {
+    outline: none;
+    border: 1px solid rgb(104, 166, 104);
+}
+.saveButton {
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: #333;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-top: 24px;
+    margin-left: auto;
+    margin-right: auto;
 }
