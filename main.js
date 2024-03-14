@@ -2,10 +2,28 @@ const contactForm = document.querySelector(".contact-form");
 const nameInput = document.querySelector("#name-input");
 const phoneInput = document.querySelector("#phone-input");
 const contactList = document.querySelector(".contacts-list");
+const contactImageInput = document.querySelector(".contact-image-input");
+let src = null;
 let contactArr = [];
 let id = 1;
 
 contactForm.addEventListener("submit", addContact);
+contactImageInput.addEventListener("change", onImageInputChange);
+function onImageInputChange(event) {
+    console.log("onchange");
+    const reader = new FileReader();
+    console.log(reader);
+    reader.addEventListener("load", function () {
+        if (this.result) {
+            src = this.result;
+            console.log(src);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
+}
+// function onImageLoad() {
+
+// }
 
 const localContact = JSON.parse(localStorage.getItem("contacts"));
 console.log(localContact);
@@ -42,16 +60,19 @@ function renderContacts() {
         .map((item) => {
             return `
             <li class="contactItem" id=${item.id}>
-                <div class="first-wrapper"><div class="contactsTextWrapper">
+         
+                <div class="contact-form-wrapper">
+                <img width='64' height='64' class="contact-image" src="" alt="">
+                <div class="contactsTextWrapper">
                     <p class="contact-name">name:    <span class="contact-name">${item.name}</span></p>
                     <p class="contact-phone">phone:    <span class="contact-phone">${item.phone}</span></p>
                 </div>
-                
+                </div>
                 <div class="btn-wrapper">
                 <button class="delete-button">DELETE</button>
                 <buttton class="edit-button">EDIT</buttton>
                  </div>
-                </div>
+         
             </li>`;
         })
         .join("");
