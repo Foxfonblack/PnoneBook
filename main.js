@@ -10,15 +10,16 @@ let id = 1;
 contactForm.addEventListener("submit", addContact);
 contactImageInput.addEventListener("change", onImageInputChange);
 function onImageInputChange(event) {
+    console.log(event.target.files);
     console.log("onchange");
     const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
     console.log(reader);
     reader.addEventListener("load", function () {
-        if (this.result) {
-            src = this.result;
+        if (reader.result) {
+            src = reader.result;
             console.log(src);
         }
-        reader.readAsDataURL(event.target.files[0]);
     });
 }
 // function onImageLoad() {
@@ -47,9 +48,13 @@ function addContact(event) {
         id,
         name: elements.name.value,
         phone: elements.phone.value,
+        src,
+        spanIdPhone,
+        spanIdName,
     };
     contactArr.push(contact);
     id += 1;
+
     contactForm.reset();
     renderContacts();
     localStorage.setItem("contacts", JSON.stringify(contactArr));
@@ -62,10 +67,10 @@ function renderContacts() {
             <li class="contactItem" id=${item.id}>
          
                 <div class="contact-form-wrapper">
-                <img width='64' height='64' class="contact-image" src="" alt="">
+                <img width='64' height='64' class="contact-image" src=${item.src} alt="">
                 <div class="contactsTextWrapper">
-                    <p class="contact-name">name:    <span class="contact-name">${item.name}</span></p>
-                    <p class="contact-phone">phone:    <span class="contact-phone">${item.phone}</span></p>
+                    <p class="contact-name">name:    <span class="contact-span-name" id='span1'>${item.name}</span></p>
+                    <p class="contact-phone">phone:    <span class="contact-span-phone"id = 'span2'>${item.phone}</span></p>
                 </div>
                 </div>
                 <div class="btn-wrapper">
@@ -110,16 +115,18 @@ function onEditBtnClick(event) {
     if (event.target.classList.contains("edit-button")) {
         const textAreaName = document.createElement("textarea");
         textAreaName.classList.add("textAreaName", "textAreaElement");
-        textAreaName.value =
-            event.target.closest(
-                "li"
-            ).firstElementChild.firstElementChild.firstElementChild.firstElementChild.textContent;
+        textAreaName.value = event.target
+            .closest("li")
+            .querySelector("#span1").textContent;
+        // event.target.closest(
+        //     "li"
+        // ).firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.textContent;
+
         const textAreaPhone = document.createElement("textarea");
         textAreaPhone.classList.add("textAreaPhone", "textAreaElement");
-        textAreaPhone.value =
-            event.target.closest(
-                "li"
-            ).firstElementChild.firstElementChild.lastElementChild.firstElementChild.textContent;
+        textAreaPhone.value = event.target
+            .closest("li")
+            .querySelector("#span2").textContent;
         const saveButton = document.createElement("div");
         saveButton.classList.add("saveButton", "textAreaElement");
         saveButton.textContent = "SAVE";
